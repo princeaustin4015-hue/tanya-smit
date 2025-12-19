@@ -1,12 +1,9 @@
 "use client"
 
-import { Flame, TrendingUp, Play, Star } from "lucide-react"
+import { Flame, TrendingUp } from "lucide-react"
 import { motion } from "framer-motion"
 import { hotGames, TopGames } from "../gameLink/gamelink"
 import { GameCard } from "./GameCard"
-
-
-
 
 export default function GamesSection() {
   return (

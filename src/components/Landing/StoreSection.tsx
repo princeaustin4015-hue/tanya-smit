@@ -20,20 +20,20 @@ const specialOffers = [
   },
   {
     id: 3,
-    title: "Deposit Bonus",
-    description: "30% Bonus on $20+ Deposit",
+    title: "Purchase Bonus",
+    description: "30% Bonus Tokens on $20+ Purchase",
     discount: "30%"
   },
   {
     id: 4,
     title: "Regular Bonus",
-    description: "20% Regular Bonus on $10+ Deposit",
+    description: "20% Bonus Tokens on $10+ Purchase",
     discount: "20%"
   },
   {
     id: 5,
-    title: "Free Play",
-    description: "$5 Free Play",
+    title: "Free Tokens",
+    description: "$5 Free Tokens",
     discount: "$5"
   }
 ]

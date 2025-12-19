@@ -10,12 +10,12 @@ const communityPosts = [
     id: 1,
     author: "Alex M.",
     avatar: "👨",
-    content: "Just hit my biggest win ever! $12,450 on Mega Fortune! 🎉",
+    content: "Just earned my biggest achievement! Earned tons of XP and tokens! 🎉",
     likes: 245,
     comments: 32,
     shares: 18,
     time: "2h ago",
-    game: "Mega Fortune"
+    game: "MF"
   },
   {
     id: 2,
@@ -32,12 +32,12 @@ const communityPosts = [
     id: 3,
     author: "Mike R.",
     avatar: "👨‍💼",
-    content: "Tips for Blackjack Pro: Always count your cards and stay disciplined!",
+    content: "Great strategies for earning more XP and leveling up faster!",
     likes: 312,
     comments: 67,
     shares: 24,
     time: "8h ago",
-    game: "Blackjack Pro"
+    game: "BP"
   },
   {
     id: 4,
@@ -53,7 +53,7 @@ const communityPosts = [
 ]
 
 const topContributors = [
-  { id: 1, name: "John D.", avatar: "🤴", points: 12500, badge: "Champion" },
+  { id: 1, name: "John D.", avatar: "🤴", points: 12500, badge: "Top Player" },
   { id: 2, name: "Lisa W.", avatar: "👸", points: 9800, badge: "Expert" },
   { id: 3, name: "Robert M.", avatar: "👨‍💼", points: 8700, badge: "Pro" }
 ]

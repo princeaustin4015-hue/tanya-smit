@@ -1,11 +1,16 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { ChevronLeft, ChevronRight, Gift, Zap, Star, Sparkles, Crown, Diamond, Play } from "lucide-react"
+import { Gift, Zap, Star, Sparkles, Crown, Diamond, Play, Facebook } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { motion, AnimatePresence } from "framer-motion"
-import Link from "next/link"
 import Image from "next/image"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 
 const heroCards = [
   {
@@ -28,9 +33,9 @@ const heroCards = [
   },
   {
     id: 3,
-    title: "Deposit Bonus",
-    subtitle: "30% Bonus on $20+ Deposit",
-    description: "Get 30% bonus when you deposit $20 or more",
+    title: "Purchase Bonus",
+    subtitle: "30% Bonus on $20+ Purchase",
+    description: "Get 30% bonus tokens when you purchase $20 or more",
     icon: "star",
     image: "/images/ppp.png",
     gradient: "from-blue-400 via-purple-500 to-pink-500"
@@ -38,30 +43,21 @@ const heroCards = [
   {
     id: 4,
     title: "Regular Bonus",
-    subtitle: "20% Regular Bonus on $10+ Deposit",
-    description: "Get 20% bonus on deposits of $10 or more",
+    subtitle: "20% Regular Bonus on $10+ Purchase",
+    description: "Get 20% bonus tokens on purchases of $10 or more",
     icon: "gift",
     image: "/images/ppp.png",
     gradient: "from-green-400 via-teal-500 to-blue-500"
   },
   {
     id: 5,
-    title: "Free Play",
-    subtitle: "$5 Free Play",
-    description: "Get $5 free play to start your journey",
+    title: "Free Tokens",
+    subtitle: "$5 Free Tokens",
+    description: "Get $5 free tokens to start your journey",
     icon: "zap",
     image: "/images/ppp.png",
     gradient: "from-yellow-400 via-amber-500 to-orange-500"
   }
-]
-
-const topGames = [
-  { id: 1, name: "Mega Fortune", tag: "Jackpot", image: "/images/pic (1).jpg", rating: 4.9 },
-  { id: 2, name: "Blackjack Pro", tag: "Table", image: "/images/pic (2).jpg", rating: 4.8 },
-  { id: 3, name: "Roulette Royal", tag: "Classic", image: "/images/pic (3).jpg", rating: 4.7 },
-  { id: 4, name: "Poker Master", tag: "Cards", image: "/images/pic (4).jpg", rating: 4.9 },
-  { id: 5, name: "Lucky Sevens", tag: "Slots", image: "/images/pic (1).webp", rating: 4.6 },
-  { id: 6, name: "Baccarat Elite", tag: "VIP", image: "/images/pic (1).jpg", rating: 4.8 }
 ]
 
 const IconComponent = ({ iconType }: { iconType: string }) => {
@@ -77,57 +73,12 @@ const IconComponent = ({ iconType }: { iconType: string }) => {
   }
 }
 
-function GameCard({ game, index }: { game: typeof topGames[0], index: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="cursor-pointer group"
-    >
-      {/* Image Card */}
-      <div className="aspect-square rounded-2xl card-hover relative overflow-hidden mb-3">
-        <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 to-red-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl z-20"></div>
-
-        {/* Play button overlay */}
-        <motion.div
-          className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30"
-          whileHover={{ scale: 1.1 }}
-        >
-          <div className="glass-effect rounded-full p-4 glow-gold">
-            <Play className="h-8 w-8 text-yellow-400 fill-current" />
-          </div>
-        </motion.div>
-
-        <img
-          src={game.image}
-          alt={game.name}
-          className="w-full h-full object-cover rounded-2xl group-hover:scale-110 transition-transform duration-300"
-        />
-      </div>
-
-      {/* Details Below */}
-      <div className="text-center">
-        <h3 className="text-white font-bold text-sm group-hover:text-yellow-400 transition-colors duration-300 mb-2">
-          {game.name}
-        </h3>
-        <span className="text-xs px-3 py-1 red-glow text-white rounded-full font-semibold">
-          {game.tag}
-        </span>
-      </div>
-    </motion.div>
-  )
-}
-
 export default function HeroSection() {
   const [currentCard, setCurrentCard] = useState(0)
+  const [socialModalOpen, setSocialModalOpen] = useState(false)
 
   const nextCard = () => {
     setCurrentCard((prev) => (prev + 1) % heroCards.length)
-  }
-
-  const prevCard = () => {
-    setCurrentCard((prev) => (prev - 1 + heroCards.length) % heroCards.length)
   }
 
   // Auto-play carousel
@@ -248,12 +199,15 @@ export default function HeroSection() {
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.8, type: "spring", stiffness: 200 }}
                       >
-                        <Link href="https://www.facebook.com/share/1BzNW3aSMd/" target="_blank">
-                          <Button variant="gold" size="lg" className="text-sm sm:text-base md:text-lg px-4 sm:px-6 md:px-8 py-3 sm:py-4 font-black w-full sm:w-auto">
-                            <Gift className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                            Claim Now
-                          </Button>
-                        </Link>
+                        <Button 
+                          variant="gold" 
+                          size="lg" 
+                          className="text-sm sm:text-base md:text-lg px-4 sm:px-6 md:px-8 py-3 sm:py-4 font-black w-full sm:w-auto"
+                          onClick={() => setSocialModalOpen(true)}
+                        >
+                          <Gift className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+                          Claim Now
+                        </Button>
                       </motion.div>
                     </div>
 
@@ -311,22 +265,83 @@ export default function HeroSection() {
         className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 justify-center items-center mt-8 sm:mt-12 md:mt-20 px-4"
       >
         {/* Play Button */}
-        <Link href="https://www.facebook.com/share/1BzNW3aSMd/" target="_blank">
-          <Button variant="gold" size="lg" className="text-sm sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 font-black flex items-center gap-2 w-full sm:w-auto">
-            <Play className="h-4 w-4 sm:h-5 sm:w-5" />
-            Play Now
-          </Button>
-        </Link>
-        <Link href="https://www.facebook.com/share/1BzNW3aSMd/" target="_blank"> 
-          <Button variant="glass" size="lg" className="text-sm sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 font-black flex items-center gap-2 w-full sm:w-auto">
-            <Gift className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-400" />
-            Claim Bonus
-          </Button>
-        </Link>
-
-        {/* Claim Button */}
-
+        <Button 
+          variant="gold" 
+          size="lg" 
+          className="text-sm sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 font-black flex items-center gap-2 w-full sm:w-auto"
+          onClick={() => setSocialModalOpen(true)}
+        >
+          <Play className="h-4 w-4 sm:h-5 sm:w-5" />
+          Play Now
+        </Button>
+        <Button 
+          variant="glass" 
+          size="lg" 
+          className="text-sm sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 font-black flex items-center gap-2 w-full sm:w-auto"
+          onClick={() => setSocialModalOpen(true)}
+        >
+          <Gift className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-400" />
+          Claim Bonus
+        </Button>
       </motion.div>
+
+      {/* Social Media Modal */}
+      <Dialog open={socialModalOpen} onOpenChange={setSocialModalOpen}>
+        <DialogContent className="glass-effect border-yellow-400/20 max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-black text-white text-center mb-4 text-glow">
+              Connect With Us
+            </DialogTitle>
+          </DialogHeader>
+          <div className="flex flex-col items-center space-y-6 py-6">
+            <p className="text-gray-300 text-center text-lg">
+              Choose your preferred platform to get started
+            </p>
+            <div className="flex items-center justify-center space-x-8">
+              {/* Facebook Icon */}
+              <motion.a
+                href="https://www.facebook.com/share/1BzNW3aSMd/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center space-y-3 group"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <div className="p-6 rounded-2xl glass-effect bg-gradient-to-br from-blue-500/20 to-blue-600/20 border border-blue-400/30 group-hover:border-blue-400/60 transition-all duration-300">
+                  <Facebook className="h-12 w-12 text-blue-400 group-hover:text-blue-300 transition-colors" />
+                </div>
+                <span className="text-white font-semibold text-lg group-hover:text-blue-400 transition-colors">
+                  Facebook
+                </span>
+              </motion.a>
+
+              {/* Telegram Icon */}
+              <motion.a
+                href="https://t.me/Tanyasmitofficial"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center space-y-3 group"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <div className="p-6 rounded-2xl glass-effect bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-400/30 group-hover:border-cyan-400/60 transition-all duration-300">
+                  <svg 
+                    className="h-12 w-12 text-cyan-400 group-hover:text-cyan-300 transition-colors" 
+                    fill="currentColor" 
+                    viewBox="0 0 24 24" 
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                  </svg>
+                </div>
+                <span className="text-white font-semibold text-lg group-hover:text-cyan-400 transition-colors">
+                  Telegram
+                </span>
+              </motion.a>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
 
     </section>

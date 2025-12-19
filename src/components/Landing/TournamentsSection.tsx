@@ -2,29 +2,27 @@
 
 import { Trophy } from "lucide-react"
 import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
 
 const tournaments = [
   {
     id: 1,
     name: "Mega Championship",
-    game: "Mega Fortune"
+    game: "MF"
   },
   {
     id: 2,
     name: "Weekly Showdown",
-    game: "Blackjack Pro"
+    game: "BP"
   },
   {
     id: 3,
     name: "Elite Tournament",
-    game: "Poker Master"
+    game: "PM"
   },
   {
     id: 4,
     name: "Daily Challenge",
-    game: "Roulette Royal"
+    game: "RR"
   }
 ]
 
@@ -93,4 +91,3 @@ export default function TournamentsSection() {
     </section>
   )
 }
-

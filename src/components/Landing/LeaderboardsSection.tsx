@@ -113,13 +113,13 @@ export default function LeaderboardsSection() {
             <div className="glass-effect rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center">
               <div className="flex items-center justify-center space-x-2 sm:space-x-3 mb-3 sm:mb-4">
                 <Crown className="h-6 w-6 sm:h-8 sm:w-8 text-yellow-400" />
-                <h3 className="text-lg sm:text-xl font-bold text-white">Champion</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-white">Top Player</h3>
               </div>
               <div className="text-4xl sm:text-5xl md:text-6xl mb-3 sm:mb-4">{leaderboardData[0].avatar}</div>
               <div className="text-xl sm:text-2xl font-bold text-yellow-400 mb-4">{leaderboardData[0].name}</div>
               <Link href="https://www.facebook.com/share/1BzNW3aSMd/" target="_blank">
                 <Button variant="gold" size="lg" className="w-full">
-                  Challenge Champion
+                  Challenge Top Player
                 </Button>
               </Link>
             </div>

@@ -1,13 +1,26 @@
 "use client"
 
-import { useState } from "react"
-import { Search, Menu, Crown, Sparkles, X } from "lucide-react"
+import { useState, useEffect } from "react"
+import { Search, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
+
+  // Close menu on Escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setMenuOpen(false)
+        setSearchOpen(false)
+      }
+    }
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [])
 
   return (
     <>
@@ -51,6 +64,14 @@ export default function Navbar() {
                   type="text"
                   placeholder="Search games, players, tournaments..."
                   className="w-full pl-12 pr-6 py-3 premium-input text-white placeholder-gray-400 text-base"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      const searchTerm = (e.target as HTMLInputElement).value
+                      if (searchTerm.trim()) {
+                        // Handle search functionality here
+                      }
+                    }
+                  }}
                 />
               </motion.div>
             </div>
@@ -89,7 +110,12 @@ export default function Navbar() {
             {/* Right Buttons */}
             <div className="flex items-center space-x-2 lg:space-x-4 flex-shrink-0">
               {/* Search Button (mobile) */}
-              <Button variant="glass" size="icon" className="xl:hidden">
+              <Button 
+                variant="glass" 
+                size="icon" 
+                className="xl:hidden"
+                onClick={() => setSearchOpen(!searchOpen)}
+              >
                 <Search className="h-5 w-5" />
               </Button>
 
@@ -108,33 +134,55 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Search */}
-        <div className="xl:hidden px-4 sm:px-6 lg:px-8 pb-4">
-          <motion.div 
-            className="relative w-full"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-          >
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-            <input
-              type="text"
-              placeholder="Search games, players..."
-              className="w-full pl-12 pr-6 py-3 premium-input text-white placeholder-gray-400 text-base"
-            />
-          </motion.div>
-        </div>
+        <AnimatePresence>
+          {searchOpen && (
+            <motion.div 
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="xl:hidden px-4 sm:px-6 lg:px-8 pb-4 overflow-hidden"
+            >
+              <div className="relative w-full">
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                <input
+                  type="text"
+                  placeholder="Search games, players..."
+                  className="w-full pl-12 pr-6 py-3 premium-input text-white placeholder-gray-400 text-base"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      const searchTerm = e.currentTarget.value
+                      if (searchTerm.trim()) {
+                        // Handle search functionality here
+                      }
+                    }
+                  }}
+                />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.nav>
 
       {/* Mobile Menu Dropdown */}
       <AnimatePresence>
         {menuOpen && (
-          <motion.div 
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="fixed top-16 sm:top-20 right-0 bottom-0 w-full sm:w-80 glass-effect z-40 p-6 flex flex-col space-y-4 sm:space-y-6 lg:hidden"
-          >
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+              onClick={() => setMenuOpen(false)}
+            />
+            <motion.div 
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="fixed top-16 sm:top-20 right-0 bottom-0 w-full sm:w-80 glass-effect z-40 p-4 sm:p-6 flex flex-col space-y-2 sm:space-y-4 lg:hidden overflow-y-auto"
+            >
             {[
               { name: "Games", id: "games" },
               { name: "Tournaments", id: "tournaments" },
@@ -153,12 +201,13 @@ export default function Navbar() {
                     element.scrollIntoView({ behavior: 'smooth', block: 'start' })
                   }
                 }}
-                className="text-white hover:text-red-400 text-lg font-medium"
+                className="text-white hover:text-red-400 text-lg sm:text-xl font-medium py-3 sm:py-4 px-4 rounded-lg hover:bg-white/5 transition-all min-h-[48px] flex items-center"
               >
                 {item.name}
               </a>
             ))}
-          </motion.div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
 

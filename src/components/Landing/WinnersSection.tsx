@@ -1,45 +1,46 @@
 import { Trophy, DollarSign, Crown, TrendingUp } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
-const latestWinners = [
-  { id: 1, name: "Alex M.", amount: "$12,450", game: "Mega Fortune", avatar: "👨" },
-  { id: 2, name: "Sarah K.", amount: "$8,920", game: "Blackjack Pro", avatar: "👩" },
-  { id: 3, name: "Mike R.", amount: "$15,680", game: "Roulette Royal", avatar: "👨‍💼" },
-  { id: 4, name: "Emma L.", amount: "$6,340", game: "Lucky Sevens", avatar: "👩‍💻" },
-  { id: 5, name: "David P.", amount: "$22,100", game: "Poker Master", avatar: "👨‍🎓" }
+const latestPlayers = [
+  { id: 1, name: "Alex M.", xp: "12,450 XP", game: "MF", avatar: "👨" },
+  { id: 2, name: "Sarah K.", xp: "8,920 XP", game: "BP", avatar: "👩" },
+  { id: 3, name: "Mike R.", xp: "15,680 XP", game: "RR", avatar: "👨‍💼" },
+  { id: 4, name: "Emma L.", xp: "6,340 XP", game: "LS", avatar: "👩‍💻" },
+  { id: 5, name: "David P.", xp: "22,100 XP", game: "PM", avatar: "👨‍🎓" }
 ]
 
-const topWinners = [
-  { id: 1, name: "John D.", amount: "$125,000", rank: 1, avatar: "🤴" },
-  { id: 2, name: "Lisa W.", amount: "$98,500", rank: 2, avatar: "👸" },
-  { id: 3, name: "Robert M.", amount: "$87,200", rank: 3, avatar: "👨‍💼" },
-  { id: 4, name: "Anna S.", amount: "$76,800", rank: 4, avatar: "👩‍🚀" },
-  { id: 5, name: "Chris B.", amount: "$65,400", rank: 5, avatar: "👨‍🎨" }
+const topPlayers = [
+  { id: 1, name: "John D.", xp: "125,000 XP", rank: 1, avatar: "🤴" },
+  { id: 2, name: "Lisa W.", xp: "98,500 XP", rank: 2, avatar: "👸" },
+  { id: 3, name: "Robert M.", xp: "87,200 XP", rank: 3, avatar: "👨‍💼" },
+  { id: 4, name: "Anna S.", xp: "76,800 XP", rank: 4, avatar: "👩‍🚀" },
+  { id: 5, name: "Chris B.", xp: "65,400 XP", rank: 5, avatar: "👨‍🎨" }
 ]
 
-interface Winner {
+interface Player {
   id: number;
   name: string;
-  amount: string;
+  xp: string;
   game?: string;
   rank?: number;
   avatar: string;
 }
 
-function WinnerCard({ winner, showGame = false }: { winner: Winner, showGame?: boolean }) {
+function PlayerCard({ player, showGame = false }: { player: Player, showGame?: boolean }) {
   return (
     <div className="flex items-center space-x-3 p-3 glass-effect rounded-lg hover:bg-white/5 transition-colors">
-      <div className="text-2xl">{winner.avatar}</div>
+      <div className="text-2xl">{player.avatar}</div>
       <div className="flex-1">
-        <div className="text-white font-semibold">{winner.name}</div>
-        {showGame && <div className="text-gray-400 text-sm">{winner.game}</div>}
-        {winner.rank && (
+        <div className="text-white font-semibold">{player.name}</div>
+        {showGame && <div className="text-gray-400 text-sm">{player.game}</div>}
+        {player.rank && (
           <div className="flex items-center space-x-1">
-            <span className="text-yellow-400 text-sm">#{winner.rank}</span>
+            <span className="text-yellow-400 text-sm">#{player.rank}</span>
           </div>
         )}
       </div>
-      <div className="text-green-400 font-bold">{winner.amount}</div>
+      <div className="text-green-400 font-bold">{player.xp}</div>
     </div>
   )
 }
@@ -49,50 +50,52 @@ export default function WinnersSection() {
     <section className="py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Latest Winners */}
+          {/* Latest Achievements */}
           <div className="glass-effect rounded-2xl p-6">
             <div className="flex items-center space-x-3 mb-6">
               <TrendingUp className="h-6 w-6 text-green-400" />
-              <h3 className="text-xl font-bold text-white">Latest Winners</h3>
+              <h3 className="text-xl font-bold text-white">Latest Achievements</h3>
             </div>
             <div className="space-y-3">
-              {latestWinners.map((winner) => (
-                <WinnerCard key={winner.id} winner={winner} showGame />
+              {latestPlayers.map((player) => (
+                <PlayerCard key={player.id} player={player} showGame />
               ))}
             </div>
           </div>
 
-          {/* Total Jackpot */}
+          {/* Token Pool */}
           <div className="glass-effect rounded-2xl p-6 text-center">
             <div className="flex items-center justify-center space-x-3 mb-4">
               <DollarSign className="h-8 w-8 text-yellow-400" />
-              <h3 className="text-xl font-bold text-white">Total Jackpot</h3>
+              <h3 className="text-xl font-bold text-white">Token Pool</h3>
             </div>
             <div className="mb-6">
-              <div className="text-4xl font-bold gold-gradient mb-2">$2,847,392</div>
-              <div className="text-gray-400">Progressive Jackpot Pool</div>
+              <div className="text-4xl font-bold gold-gradient mb-2">2,847,392</div>
+              <div className="text-gray-400">Total Tokens Available</div>
             </div>
             <div className="mb-6">
               <div className="text-6xl mb-4">💰</div>
               <div className="text-gray-300 text-sm mb-4">
-                Jackpot increases with every bet placed across all games
+                Token pool increases as players earn XP and achievements
               </div>
             </div>
-            <Button variant="gold" size="lg" className="w-full">
-              <Trophy className="h-5 w-5 mr-2" />
-              Play Now
-            </Button>
+            <Link href="https://www.facebook.com/share/1BzNW3aSMd/" target="_blank">
+              <Button variant="gold" size="lg" className="w-full">
+                <Trophy className="h-5 w-5 mr-2" />
+                Play Now
+              </Button>
+            </Link>
           </div>
 
-          {/* Top Winners */}
+          {/* Top Players */}
           <div className="glass-effect rounded-2xl p-6">
             <div className="flex items-center space-x-3 mb-6">
               <Crown className="h-6 w-6 text-yellow-400" />
-              <h3 className="text-xl font-bold text-white">Top Winners</h3>
+              <h3 className="text-xl font-bold text-white">Top Players</h3>
             </div>
             <div className="space-y-3">
-              {topWinners.map((winner) => (
-                <WinnerCard key={winner.id} winner={winner} />
+              {topPlayers.map((player) => (
+                <PlayerCard key={player.id} player={player} />
               ))}
             </div>
           </div>
